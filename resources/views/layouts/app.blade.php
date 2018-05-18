@@ -52,7 +52,7 @@
                             </div>
                         </li>
                         @else
-                        <li @if ($currentRoute == $route || stristr($currentRoute, $route)) class="active"@endif>
+                        <li @if ($currentRoute == $route || stristr($currentRoute, $route)) class="active" @endif>
                             <a class="nav-link" href="{{ route($route) }}">
                                 {{ $item['name'] }}
                             </a>

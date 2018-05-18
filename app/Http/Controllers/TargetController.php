@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Target;
 use App\TargetCategory;
+use App\TargetUser;
 use App\Rules\XmlRPCRequest;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class TargetController extends Controller
      */
     public function index()
     {
-        $targets = Target::get();
+        $targets = Target::with('users')->where('workspace_id', Auth::user()->state->workspace_id)->get();
 
         return view('targets.index', compact('targets'));
     }
@@ -48,11 +49,13 @@ class TargetController extends Controller
             'url'=>[new XmlRPCRequest($request)]
         ]);
 
-        $source = Target::create(array_merge(['user_id' => Auth::id()], $request->only('name', 'url', 'username', 'password')));
+        $target = Target::create(array_merge(['workspace_id' => Auth::user()->state->workspace_id, 'user_id' => Auth::id()], $request->only('name', 'url')));
+
+        $target_user = TargetUser::create(array_merge(['user_id' => Auth::id(), 'target_id' => $target->id], $request->only('username', 'password')));
 
         return redirect()->route('targets.index')
             ->with('flash_message',
-             'Target '. $source->name.' added!');
+             'Target '. $target->name.' added!');
     }
 
     /**
@@ -100,6 +103,7 @@ class TargetController extends Controller
 
         $input = $request->only(['name', 'url', 'username', 'password']);
         $target->fill($input)->save();
+        $target->user->fill($request->only('username', 'password'))->save();
 
         return redirect()->route('targets.index')
             ->with('flash_message',
@@ -134,7 +138,7 @@ class TargetController extends Controller
         });
 
         # Set the credentials for the next requests
-        $wpClient->setCredentials($target->url . '/xmlrpc.php', $target->username, $target->password);
+        $wpClient->setCredentials($target->url . '/xmlrpc.php', $target->user->username, $target->user->password);
 
         $data = $wpClient->getTerms('category');
 

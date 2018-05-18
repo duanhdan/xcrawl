@@ -15,11 +15,10 @@ class CreateTargetsTable extends Migration
     {
         Schema::create('targets', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('workspace_id');
             $table->integer('user_id');
             $table->string('name');
             $table->string('url');
-            $table->string('username');
-            $table->string('password');
             $table->timestamps();
             $table->softDeletes();
         });

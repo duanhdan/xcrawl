@@ -139,7 +139,27 @@ class WorkspaceController extends Controller
     public function user($workspace_id, $user_id)
     {
         $workspace = Workspace::findOrFail($workspace_id);
+        $user = User::findOrFail($user_id);
+
         $workspace->users()->detach($user_id);
+
+        $x_flag = false;
+        foreach ($user->workspaces as $workspace) {
+            if ($workspace->id != $workspace_id) {
+                \App\UserState::where('user_id', $user_id)->update([
+                    'workspace_id' => $workspace->id,
+                    'role_id' => $user->role($workspace->id)->id,
+                    'created_at' => Carbon::now()
+                ]);
+
+                $x_flag = true;
+                break;
+            }
+        }
+
+        if (! $x_flag) {
+            \App\UserState::where('user_id', $user_id)->delete();
+        }
 
         return redirect()->route('workspaces.index')
             ->with('flash_message',

@@ -68,6 +68,14 @@ class AppServiceProvider extends ServiceProvider
                     'rules.create' => 'Add Rule'
                 ]
             ],
+            'settings' => [
+                'role' => ['Writer'],
+                'name' => 'Settings',
+                'icon' => 'icon-xxx',
+                'child' => [
+                    'settings.targets.index' => 'Targets',
+                ]
+            ],
         ]);
     }
 

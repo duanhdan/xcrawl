@@ -18,19 +18,30 @@
 						</thead>
 						<tbody>
 							@foreach ($targets as $target)
-							<tr>
-								<th scope="row">{{ $target->id }}</th>
-								<td>{{ $target->name }}</td>
-								<td>{{ $target->url }}</td>
-								<td>{{ $target->username }}</td>
-								<td>
-									{!! Form::open(['method' => 'DELETE', 'route' => ['targets.destroy', $target->id] ]) !!}
-									<a href="{{ route('targets.fetch', $target->id) }}" class="btn btn-primary btn-sm" role="button">Update</a>
-									<a href="{{ route('targets.edit', $target->id) }}" class="btn btn-success btn-sm" role="button">Edit</a>
-									{!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
-									{!! Form::close() !!}
-								</td>
-							</tr>
+								@foreach ($target->users as $target_user)
+								<tr>
+									@if (Auth::id() == $target_user->user_id)
+									<th scope="row">{{ $target->id }}</th>
+									<td>{{ $target->name }}</td>
+									<td>{{ $target->url }}</td>
+									@else
+									<td colspan="3"></td>
+									@endif
+									<td>{{ $target_user->username }} ~ {{ $target_user->user->email }}</td>
+
+									@if (Auth::id() == $target_user->user_id)
+									<td>
+										{!! Form::open(['method' => 'DELETE', 'route' => ['targets.destroy', $target->id] ]) !!}
+										<a href="{{ route('targets.fetch', $target->id) }}" class="btn btn-primary btn-sm" role="button">Update</a>
+										<a href="{{ route('targets.edit', $target->id) }}" class="btn btn-success btn-sm" role="button">Edit</a>
+										{!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
+										{!! Form::close() !!}
+									</td>
+									@else
+									<td></th>
+									@endif
+								</tr>
+								@endforeach
 							@endforeach
 						</tbody>
 					</table>
