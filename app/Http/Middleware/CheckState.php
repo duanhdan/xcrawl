@@ -15,8 +15,10 @@ class CheckState
      */
     public function handle($request, Closure $next)
     {
-        if (! $request->user()->state && $request->route()->uri != '/') {
-            return redirect()->route('home');
+        if ($request->user()) {
+            if (! $request->user()->state && $request->route()->uri != '/') {
+                return redirect()->route('home');
+            }
         }
 
         return $next($request);

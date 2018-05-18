@@ -18,6 +18,8 @@ class CreateTargetsTable extends Migration
             $table->integer('user_id');
             $table->string('name');
             $table->string('url');
+            $table->string('username');
+            $table->string('password');
             $table->timestamps();
             $table->softDeletes();
         });

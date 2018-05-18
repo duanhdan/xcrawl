@@ -22,6 +22,8 @@ Route::middleware(['auth'])->group(function () {
 
 	Route::resource('sources', 'SourceController');
 	Route::resource('targets', 'TargetController');
+	Route::get('targets/{target}/fetch', 'TargetController@fetch')->name('targets.fetch');
+
 	Route::resource('rules', 'RuleController');
 	Route::resource('posts', 'PostController');
 	Route::resource('links', 'PostController');
