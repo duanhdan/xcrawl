@@ -19,9 +19,12 @@ class Target extends Model
 		return $this->hasMany('App\TargetCategory');
 	}
 
-	public function user()
+	public function user($id = null)
     {
-        return $this->hasOne('App\TargetUser')->where('user_id', Auth::id());
+        if (! $id) {
+            $id = Auth::id();
+        }
+        return $this->hasOne('App\TargetUser')->where('user_id', $id);
     }
 
     public function users()

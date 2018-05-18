@@ -47,5 +47,13 @@ class SettingUp extends Seeder
 			'role_id' => $id_manager_role,
 			'created_at' => Carbon::now()
 		]);
+
+		// Add default source
+		$id_default_source = DB::table('sources')->insertGetId([
+			'name' => 'bestie.vn',
+			'url' => 'http://bestie.vn/',
+			'status' => 1,
+			'created_at' => Carbon::now()
+		]);
 	}
 }

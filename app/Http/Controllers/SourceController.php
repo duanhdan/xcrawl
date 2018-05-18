@@ -39,7 +39,7 @@ class SourceController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'=>'required|max:255',
+            'name'=>'required|max:255|unique:sources',
             'url'=>'required|url|max:255',
         ]);
 
@@ -87,7 +87,7 @@ class SourceController extends Controller
 
         //Validate name, email and password fields
         $this->validate($request, [
-            'name'=>'required|max:255',
+            'name'=>'required|max:255|unique:sources',
             'url'=>'required|url|max:255',
         ]);
         $input = $request->only(['name', 'url', 'status']);
