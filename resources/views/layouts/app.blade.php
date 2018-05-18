@@ -36,7 +36,12 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                     @if (Auth::check())
+                        <!-- Check active -->
+                        @if (Auth::user()->state)
                         @foreach ($navigations as $route => $item)
+                        <!-- Check role -->
+                        @if (in_array(Auth::user()->state->role->name, $item['role']) || Auth::user()->id == 1)
+                        <!-- Check sub-menu -->
                         @if (isset($item['child']))
                         <li class="nav-item dropdown @if ($currentRoute == $route || stristr($currentRoute, $route)) active @endif">
                             <a class="nav-link dropdown-toggle" href="#" id="nav_dropdown_{{ $route }}" role="button" data-toggle="dropdown">{{ $item['name'] }}</a>
@@ -53,7 +58,24 @@
                             </a>
                         </li>
                         @endif
+                        @endif
                         @endforeach
+
+                        @else
+                        <span class="navbar-text">No Workspace</span>
+                        @endif
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }} [ {{ Auth::user()->name }} ]
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
                     @endif
                     </ul>
 
@@ -64,23 +86,24 @@
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                             <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                         @else
+                            <!-- Check active -->
+                            @if (Auth::user()->state)
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                                <a id="currentWorkspace" class="nav-link dropdown-toggle btn btn-danger dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->state->role->name }} _at_ {{ Auth::user()->state->workspace->name }}</a>
 
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="currentWorkspace">
+                                @foreach(Auth::user()->workspaces as $workspace)
+                                    <a class="dropdown-item">
+                                    {!! Form::open(['method' => 'PUT', 'route' => ['workspaces.setCurrent', $workspace->id, Auth::user()->id, Auth::user()->role($workspace->id)->id] ]) !!}
+                                    {!! Form::button(Auth::user()->role($workspace->id)->name . ' _at_ ' . $workspace->name, ['type' => 'submit', 'class' => 'btn btn-link']) !!}
+                                    {!! Form::close() !!}
                                     </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
+                                @endforeach
                                 </div>
                             </li>
+                            @else
+                            <span class="navbar-text">No Workspace</span>
+                            @endif
                         @endguest
                     </ul>
                 </div>
@@ -88,6 +111,13 @@
         </nav>
 
         <main class="py-4">
+            @if(Session::has('flash_message'))
+            <div class="container">
+                <div class="alert custom alert-info">
+                    <i class="icon-flash"></i> <em> {!! session('flash_message') !!}</em>
+                </div>
+            </div>
+            @endif
             @yield('content')
         </main>
     </div>

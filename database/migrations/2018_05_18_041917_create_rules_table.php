@@ -15,6 +15,13 @@ class CreateRulesTable extends Migration
     {
         Schema::create('rules', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('source_id');
+            $table->integer('source_category_id');
+            $table->integer('target_id');
+            $table->integer('target_category_id');
+            $table->string('post_status');
+            $table->integer('user_id')->default(1);
+            $table->integer('status');
             $table->timestamps();
         });
     }

@@ -17,5 +17,12 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
 	Route::resource('workspaces', 'WorkspaceController');
-	Route::resource('roles', 'RoleController');
+	Route::delete('workspaces/{workspace}/user/{user}', 'WorkspaceController@user')->name('workspaces.user');
+	Route::put('workspaces/{workspace}/user/{user}/role/{role}', 'WorkspaceController@setCurrent')->name('workspaces.setCurrent');
+
+	Route::resource('sources', 'SourceController');
+	Route::resource('targets', 'TargetController');
+	Route::resource('rules', 'RuleController');
+	Route::resource('posts', 'PostController');
+	Route::resource('links', 'PostController');
 });

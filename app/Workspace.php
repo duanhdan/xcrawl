@@ -14,4 +14,9 @@ class Workspace extends Model
     protected $fillable = [
         'name', 'status'
     ];
+
+    public function users()
+    {
+    	return $this->belongsToMany('App\User', 'workspace_user');
+    }
 }

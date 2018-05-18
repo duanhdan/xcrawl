@@ -23,7 +23,9 @@ class CreateWorkspacesTable extends Migration
         Schema::create('workspace_user', function (Blueprint $table) {
             $table->integer('workspace_id');
             $table->integer('user_id');
+            $table->integer('role_id');
             $table->timestamps();
+            $table->primary(['workspace_id', 'user_id', 'role_id']);
         });
 
         Schema::create('user_states', function (Blueprint $table) {
