@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Workspace;
 use App\User;
+use App\UserState;
 use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -100,12 +101,22 @@ class WorkspaceController extends Controller
         if ($request['user_id'] && $request['role_id']) {
             $workspace->users()->attach($request['user_id'], ['role_id' => $request['role_id']]);
 
-            \App\UserState::create([
-                'user_id' => $request['user_id'],
-                'workspace_id' => $id,
-                'role_id' => $request['role_id'],
-                'created_at' => Carbon::now()
-            ]);
+            $check = UserState::where('user_id', $request['user_id'])->first();
+
+            if ($check->exists()) {
+                // $check->update([
+                //     'workspace_id' => $id,
+                //     'role_id' => $request['role_id']
+                // ]);
+                // Do nothing
+            } else {
+                UserState::create([
+                    'user_id' => $request['user_id'],
+                    'workspace_id' => $id,
+                    'role_id' => $request['role_id'],
+                    'created_at' => Carbon::now()
+                ]);
+            }
         }
 
         return redirect()->route('workspaces.index')
@@ -146,7 +157,7 @@ class WorkspaceController extends Controller
         $x_flag = false;
         foreach ($user->workspaces as $workspace) {
             if ($workspace->id != $workspace_id) {
-                \App\UserState::where('user_id', $user_id)->update([
+                UserState::where('user_id', $user_id)->update([
                     'workspace_id' => $workspace->id,
                     'role_id' => $user->role($workspace->id)->id,
                     'created_at' => Carbon::now()
@@ -158,7 +169,7 @@ class WorkspaceController extends Controller
         }
 
         if (! $x_flag) {
-            \App\UserState::where('user_id', $user_id)->delete();
+            UserState::where('user_id', $user_id)->delete();
         }
 
         return redirect()->route('workspaces.index')
@@ -172,7 +183,7 @@ class WorkspaceController extends Controller
         $workspace = Workspace::findOrFail($workspace_id);
         $role = Role::findOrFail($role_id);
 
-        \App\UserState::where('user_id', $user_id)->update([
+        UserState::where('user_id', $user_id)->update([
             'workspace_id' => $workspace_id,
             'role_id' => $role_id,
         ]);
