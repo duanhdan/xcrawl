@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserState extends Model
 {
 	protected $fillable = [
-        'workspace_id', 'role_id'
+        'user_id', 'workspace_id', 'role_id'
     ];
 
     public function workspace()

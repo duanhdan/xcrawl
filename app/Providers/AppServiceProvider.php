@@ -45,15 +45,6 @@ class AppServiceProvider extends ServiceProvider
                     'targets.create' => 'Add Target'
                 ]
             ],
-            'rules' => [
-                'role' => ['Manager', 'Writer'],
-                'name' => 'Rules',
-                'icon' => 'icon-xxx',
-                'child' => [
-                    'rules.index' => 'List Rules',
-                    'rules.create' => 'Add Rule'
-                ]
-            ],
             'links.index' => [
                 'role' => ['Manager', 'Writer'],
                 'name' => 'Links',
@@ -66,6 +57,15 @@ class AppServiceProvider extends ServiceProvider
                 'child' => [
                     'posts.index' => 'List Posts',
                     'posts.create' => 'Add Post'
+                ]
+            ],
+            'rules' => [
+                'role' => ['Manager', 'Writer'],
+                'name' => 'Rules',
+                'icon' => 'icon-xxx',
+                'child' => [
+                    'rules.index' => 'List Rules',
+                    'rules.create' => 'Add Rule'
                 ]
             ],
         ]);

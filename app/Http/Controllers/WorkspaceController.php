@@ -6,6 +6,7 @@ use App\Workspace;
 use App\User;
 use App\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class WorkspaceController extends Controller
 {
@@ -99,9 +100,11 @@ class WorkspaceController extends Controller
         if ($request['user_id'] && $request['role_id']) {
             $workspace->users()->attach($request['user_id'], ['role_id' => $request['role_id']]);
 
-            \App\UserState::where('user_id', $request['user_id'])->update([
+            \App\UserState::create([
+                'user_id' => $request['user_id'],
                 'workspace_id' => $id,
                 'role_id' => $request['role_id'],
+                'created_at' => Carbon::now()
             ]);
         }
 
