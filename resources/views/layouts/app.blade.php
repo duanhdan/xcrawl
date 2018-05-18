@@ -31,14 +31,17 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+                @php $currentRoute = Request::route()->getName() @endphp
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li>
-                            <a class="nav-link" href="#">
-                                xxx
+                        @foreach ($navigations as $route => $item)
+                        <li @if ($currentRoute == $route || stristr($currentRoute, $route)) class="active"@endif>
+                            <a class="nav-link" href="{{ route($route) }}">
+                                {{ $item['name'] }}
                             </a>
                         </li>
+                        @endforeach
                     </ul>
 
                     <!-- Right Side Of Navbar -->

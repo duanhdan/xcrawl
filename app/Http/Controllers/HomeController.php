@@ -24,6 +24,7 @@ class HomeController extends Controller
     public function index()
     {
     	$x = new \WordpressXmlRPC();
+    	$y = \SimpleHtmlDom::str_get_html('<html></html>');
 
         return view('home');
     }

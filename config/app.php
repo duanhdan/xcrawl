@@ -211,6 +211,7 @@ return [
 		'Form' => Collective\Html\FormFacade::class,
 		'Html' => Collective\Html\HtmlFacade::class,
 		'WordpressXmlRPC' => HieuLe\WordpressXmlrpcClient\WordpressClient::class,
+		'SimpleHtmlDom' => Sunra\PhpSimple\HtmlDomParser::class,
 	],
 
 ];
