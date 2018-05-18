@@ -18,9 +18,21 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         View::share('navigations', [
-            'workspaces.index' => [
+            'workspaces' => [
                 'name' => 'Workspaces',
-                'icon' => 'icon-laptop_windows',
+                'icon' => 'icon-xxx',
+                'child' => [
+                    'workspaces.index' => 'List Workspaces',
+                    'workspaces.create' => 'Add Workspace'
+                ]
+            ],
+            'roles' => [
+                'name' => 'Roles',
+                'icon' => 'icon-xxx',
+                'child' => [
+                    'roles.index' => 'List Roles',
+                    'roles.create' => 'Add Role'
+                ]
             ],
         ]);
     }

@@ -35,13 +35,26 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                    @if (Auth::check())
                         @foreach ($navigations as $route => $item)
+                        @if (isset($item['child']))
+                        <li class="nav-item dropdown @if ($currentRoute == $route || stristr($currentRoute, $route)) active @endif">
+                            <a class="nav-link dropdown-toggle" href="#" id="nav_dropdown_{{ $route }}" role="button" data-toggle="dropdown">{{ $item['name'] }}</a>
+                            <div class="dropdown-menu" aria-labelledby="nav_dropdown_{{ $route }}">
+                                @foreach ($item['child'] as $child_route => $child_item)
+                                    <a href='{{ route($child_route) }}' class="dropdown-item">{{ $child_item }}</a>
+                                @endforeach
+                            </div>
+                        </li>
+                        @else
                         <li @if ($currentRoute == $route || stristr($currentRoute, $route)) class="active"@endif>
                             <a class="nav-link" href="{{ route($route) }}">
                                 {{ $item['name'] }}
                             </a>
                         </li>
+                        @endif
                         @endforeach
+                    @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->

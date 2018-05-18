@@ -17,4 +17,5 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
 	Route::resource('workspaces', 'WorkspaceController');
+	Route::resource('roles', 'RoleController');
 });
