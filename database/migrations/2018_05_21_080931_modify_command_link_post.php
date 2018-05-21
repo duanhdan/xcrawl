@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ModifyRules extends Migration
+class ModifyCommandLinkPost extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class ModifyRules extends Migration
      */
     public function up()
     {
-        Schema::table('rules', function (Blueprint $table) {
-            $table->string('slug_prefix', 50)->nullable()->change();
-            $table->string('slug_suffix', 50)->nullable()->change();
+        Schema::table('posts', function (Blueprint $table) {
+            $table->string('slug')->nullable()->change();
         });
     }
 
@@ -26,8 +25,8 @@ class ModifyRules extends Migration
      */
     public function down()
     {
-        Schema::table('rules', function (Blueprint $table) {
-            $table->dropColumn(['slug_prefix', 'slug_suffix']);
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropColumn(['slug']);
         });
     }
 }

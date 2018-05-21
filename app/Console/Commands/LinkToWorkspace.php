@@ -50,5 +50,10 @@ class LinkToWorkspace extends Command
                 }
             }
         }
+
+        foreach ($links as $link) {
+            $link->status = 1;
+            $link->save();
+        }
     }
 }
