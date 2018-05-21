@@ -4,7 +4,7 @@
 <div class="container">
 	{{ Form::model($workspace, array('route' => array('workspaces.update', $workspace->id), 'method' => 'PUT')) }}
 	<div class="row justify-content-center">
-		<div class="col-md-6">
+		<div class="col-md-4">
 			<div class="card">
 				<div class="card-header">Edit Workspaces: {{ $workspace->name }}</div>
 
@@ -24,7 +24,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-6">
+		<div class="col-md-4">
 			<div class="card">
 				<div class="card-header">Add User</div>
 
@@ -39,6 +39,28 @@
 						{{ Form::label('user_id', 'User') }}
 						{{ Form::select('user_id', $users, null, array('class' => 'form-control')) }}
 					</div>
+
+					{{ Form::submit('Update', array('class' => 'btn btn-primary btn-sm')) }}
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-header">Add Source</div>
+
+				<div class="card-body">
+
+					@foreach ($sources as $source)
+					<div class="form-check">
+						@if (in_array($source->id, $workspace->sources->pluck('id')->toArray()))
+						{{ Form::checkbox('source_id[]', $source->id, true, array('class' => 'form-check-input', 'id' => 'source_id_' .  $source->id)) }}
+						@else
+						{{ Form::checkbox('source_id[]', $source->id, false, array('class' => 'form-check-input', 'id' => 'source_id_' .  $source->id)) }}
+						@endif
+						{{ Form::label('source_id_' .  $source->id, $source->name, array('class' => 'form-check-label')) }}
+					</div>
+					@endforeach
 
 					{{ Form::submit('Update', array('class' => 'btn btn-primary btn-sm')) }}
 				</div>

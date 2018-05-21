@@ -66,7 +66,7 @@ class RuleController extends Controller
             'target_category_id'=>'required',
         ]);
 
-        $rule = Rule::create(array_merge(['workspace_id' => Auth::user()->state->workspace_id, 'user_id' => Auth::id()], $request->only('source_id', 'source_category_id', 'target_id', 'target_category_id', 'post_status', 'status')));
+        $rule = Rule::create(array_merge(['workspace_id' => Auth::user()->state->workspace_id, 'user_id' => Auth::id()], $request->only('source_id', 'source_category_id', 'target_id', 'target_category_id', 'post_status', 'status', 'slug_prefix', 'slug_suffix')));
 
         return redirect()->route('rules.index')
             ->with('flash_message',
@@ -79,9 +79,13 @@ class RuleController extends Controller
      * @param  \App\Rule  $rule
      * @return \Illuminate\Http\Response
      */
-    public function edit(Rule $rule)
+    public function edit($id)
     {
-        //
+        $rule = Rule::findOrFail($id);
+        $sources = Source::where('status', 1)->pluck('name', 'id')->prepend('Select source...', '');
+        $targets = Target::pluck('name', 'id')->prepend('Select target...', '');;
+
+        return view('rules.edit', compact('rule', 'sources', 'targets'));
     }
 
     /**
@@ -91,9 +95,23 @@ class RuleController extends Controller
      * @param  \App\Rule  $rule
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rule $rule)
+    public function update(Request $request, $id)
     {
-        //
+        $rule = Rule::findOrFail($id);
+
+        $this->validate($request, [
+            'source_id'=>'required',
+            'source_category_id'=>'required',
+            'target_id'=>'required',
+            'target_category_id'=>'required',
+        ]);
+
+        $input = $request->only('source_id', 'source_category_id', 'target_id', 'target_category_id', 'post_status', 'status', 'slug_prefix', 'slug_suffix');
+        $rule->fill($input)->save();
+
+        return redirect()->route('rules.index')
+            ->with('flash_message',
+             'Rule successfully updated.');
     }
 
     /**

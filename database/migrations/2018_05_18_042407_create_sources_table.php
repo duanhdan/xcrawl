@@ -27,6 +27,12 @@ class CreateSourcesTable extends Migration
             $table->string('name');
             $table->timestamps();
         });
+
+        Schema::create('workspace_source', function (Blueprint $table) {
+            $table->integer('workspace_id');
+            $table->integer('source_id');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -39,5 +45,7 @@ class CreateSourcesTable extends Migration
         Schema::dropIfExists('sources');
 
         Schema::dropIfExists('source_categories');
+
+        Schema::dropIfExists('workspace_source');
     }
 }

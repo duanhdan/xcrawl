@@ -29,7 +29,8 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('rules/getTargetCategories/{id}', 'RuleController@getTargetCategories');
 
 	Route::resource('posts', 'PostController');
-	Route::resource('links', 'PostController');
+	Route::resource('links', 'LinkController');
+	Route::get('links/post', 'LinkController@post')->name('links.post');
 
 	Route::get('settings/targets/index', 'SettingTargetController@index')->name('settings.targets.index');
 	Route::get('settings/targets/{target}/edit', 'SettingTargetController@edit')->name('settings.targets.edit');

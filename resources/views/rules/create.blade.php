@@ -35,6 +35,22 @@
 						{{ Form::select('post_status', ['draft' => 'Draft', 'publish' => 'Publish'], null, array('class' => 'form-control')) }}
 					</div>
 
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								{{ Form::label('slug_prefix', 'Url Prefix') }}
+								{{ Form::text('slug_prefix', null, array('class' => 'form-control')) }}
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								{{ Form::label('slug_suffix', 'Url Suffix') }}
+								{{ Form::text('slug_suffix', null, array('class' => 'form-control')) }}
+							</div>
+						</div>
+					</div>
+
 					<div class="form-group">
 						{{ Form::label('status', 'Status') }}
 						{{ Form::select('status', ['0' => 'InActive', '1' => 'Active'], null, array('class' => 'form-control')) }}

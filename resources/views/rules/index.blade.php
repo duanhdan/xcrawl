@@ -16,6 +16,7 @@
 							<th scope="col">Target</th>
 							<th scope="col">To Category</th>
 							<th scope="col">Post Status</th>
+							<th scope="col">Slug</th>
 							<th scope="col">Status</th>
 							<th scope="col">Operation</th>
 						</thead>
@@ -27,11 +28,12 @@
 								<td>{{ $rule->source_category->name }}</td>
 								<td>{{ $rule->target->name }}</td>
 								<td>{{ $rule->target_category->name }}</td>
-								<td>{{ $rule->post_status }}</td>
+								<td>{{ ucfirst($rule->post_status) }}</td>
+								<td><kbd>{{ $rule->slug_prefix or '' }}</kbd>-<code>url</code>-<kbd>{{ $rule->slug_suffix or '' }}</kbd></td>
 								<td>{{ $rule->status }}</td>
 								<td>
-									{!! Form::open(['method' => 'DELETE', 'route' => ['sources.destroy', $source->id] ]) !!}
-									<a href="{{ route('rules.edit', $rule->id) }}" class="btn btn-info" role="button">Edit</a>
+									{!! Form::open(['method' => 'DELETE', 'route' => ['rules.destroy', $rule->id] ]) !!}
+									<a href="{{ route('rules.edit', $rule->id) }}" class="btn btn-info btn-sm" role="button">Edit</a>
 									{!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
 									{!! Form::close() !!}
 								</td>

@@ -24,6 +24,13 @@ class CreateLinksTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('workspace_link', function (Blueprint $table) {
+            $table->integer('workspace_id');
+            $table->integer('link_id');
+            $table->tinyInteger('status');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -34,5 +41,7 @@ class CreateLinksTable extends Migration
     public function down()
     {
         Schema::dropIfExists('links');
+
+        Schema::dropIfExists('workspace_link');
     }
 }

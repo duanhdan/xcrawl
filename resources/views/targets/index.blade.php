@@ -32,7 +32,7 @@
 										</table>
 									</td>
 
-									@if ($target->user(Auth::id())->exists())
+									@if ($target->user->exists() && $target->user->user_id == Auth::id())
 									<td>
 										{!! Form::open(['method' => 'DELETE', 'route' => ['targets.destroy', $target->id] ]) !!}
 										<a href="{{ route('targets.fetch', $target->id) }}" class="btn btn-primary btn-sm" role="button">Update</a>

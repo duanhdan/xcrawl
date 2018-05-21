@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rule extends Model
 {
     protected $fillable = [
-        'workspace_id', 'source_id', 'source_category_id', 'target_id', 'target_category_id', 'post_status', 'status', 'user_id'
+        'workspace_id', 'source_id', 'source_category_id', 'target_id', 'target_category_id', 'post_status', 'status', 'user_id', 'slug_prefix', 'slug_suffix'
     ];
 
     public function workspace()
@@ -22,7 +22,7 @@ class Rule extends Model
 
     public function source_category()
     {
-    	return $this->belongsTo('App\SourceCategory', 'source_category_id');
+        return $this->belongsTo('App\SourceCategory', 'source_category_id');
     }
 
     public function target()

@@ -24,7 +24,7 @@ class Target extends Model
         if (! $id) {
             $id = Auth::id();
         }
-        return $this->hasOne('App\TargetUser')->where('user_id', $id);
+        return $this->belongsTo('App\TargetUser', 'user_id', 'user_id');
     }
 
     public function users()

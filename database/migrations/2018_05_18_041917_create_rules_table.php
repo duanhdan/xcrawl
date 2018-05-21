@@ -20,6 +20,8 @@ class CreateRulesTable extends Migration
             $table->integer('source_category_id');
             $table->integer('target_id');
             $table->integer('target_category_id');
+            $table->string('slug_prefix');
+            $table->string('slug_suffix');
             $table->string('post_status');
             $table->integer('user_id')->default(1);
             $table->integer('status');

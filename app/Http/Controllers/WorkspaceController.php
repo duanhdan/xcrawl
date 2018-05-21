@@ -6,6 +6,7 @@ use App\Workspace;
 use App\User;
 use App\UserState;
 use App\Role;
+use App\Source;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -75,8 +76,9 @@ class WorkspaceController extends Controller
         $workspace = Workspace::findOrFail($id);
         $users = User::whereNotIn('id', $workspace->users->pluck('id'))->get()->pluck('email', 'id')->prepend('Select user...', '');
         $roles = Role::get()->pluck('name', 'id')->prepend('Select role...', '');
+        $sources = Source::get();
 
-        return view('workspaces.edit', compact('workspace', 'users', 'roles'));
+        return view('workspaces.edit', compact('workspace', 'users', 'roles', 'sources'));
     }
 
     /**
@@ -116,6 +118,19 @@ class WorkspaceController extends Controller
                     'role_id' => $request['role_id'],
                     'created_at' => Carbon::now()
                 ]);
+            }
+        }
+
+        if ($request['source_id']) {
+            foreach ($workspace->sources as $source) {
+                if (! in_array($source->id, $request['source_id'])) {
+                    $workspace->sources()->detach($source->id);
+                }
+            }
+            foreach ($request['source_id'] as $source_id) {
+                if (! in_array($source_id, $workspace->sources->pluck('id')->toArray())) {
+                    $workspace->sources()->attach($source_id);
+                }
             }
         }
 

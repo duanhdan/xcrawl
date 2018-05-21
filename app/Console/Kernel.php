@@ -24,8 +24,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('link:workspace')->everyMinute();
+        $schedule->command('link:post')->everyMinute();
+        $schedule->command('post:wordpress')->everyMinute();
     }
 
     /**

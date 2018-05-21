@@ -17,6 +17,16 @@ class Workspace extends Model
 
     public function users()
     {
-    	return $this->belongsToMany('App\User', 'workspace_user');
+        return $this->belongsToMany('App\User', 'workspace_user')->withTimestamps();
+    }
+
+    public function sources()
+    {
+        return $this->belongsToMany('App\Source', 'workspace_source')->withTimestamps();
+    }
+
+    public function links()
+    {
+        return $this->belongsToMany('App\Link', 'workspace_link')->withTimestamps();
     }
 }

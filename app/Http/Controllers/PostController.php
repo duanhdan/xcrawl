@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Post;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,13 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        if (Auth::user()->role(Auth::user()->state->workspace_id)->name == 'Manager' || Auth::id() == 1) {
+            $posts = Post::where('workspace_id', Auth::user()->state->workspace_id)->orderBy('id', 'desc')->get();
+        } else {
+            $posts = Post::where('workspace_id', Auth::user()->state->workspace_id)->where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+        }
+
+        return view('posts.index', compact('posts'));
     }
 
     /**

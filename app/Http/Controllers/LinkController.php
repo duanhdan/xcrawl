@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Link;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,12 @@ class LinkController extends Controller
      */
     public function index()
     {
-        //
+        $links = Link::with('source')->whereHas('workspace', function($q){
+                    $q->where('id', Auth::user()->state->workspace_id);
+                })
+                ->orderby('id', 'desc')->paginate(20);
+
+        return view('links.index')->with('links', $links);
     }
 
     /**
