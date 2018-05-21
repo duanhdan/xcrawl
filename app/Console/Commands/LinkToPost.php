@@ -111,6 +111,7 @@ class LinkToPost extends Command
                             'status' => 0
                         ]);
 
+                        $link->workspace()->updateExistingPivot($rule->workspace_id, ['status' => 1]);
                         $link->status = 1;
                         $link->save();
                     }
