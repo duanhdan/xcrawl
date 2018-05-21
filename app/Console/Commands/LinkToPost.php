@@ -95,6 +95,7 @@ class LinkToPost extends Command
 
                         Post::create([
                             'workspace_id' => $rule->workspace_id,
+                            'rule_id' => $rule->id,
                             'link_id' => $link->id,
                             'user_id' => $rule->user_id,
                             'target_id' => $rule->target_id,

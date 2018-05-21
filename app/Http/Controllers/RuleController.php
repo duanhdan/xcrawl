@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Source;
 use App\Target;
 use App\Rule;
+use App\Post;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -98,16 +99,46 @@ class RuleController extends Controller
     public function update(Request $request, $id)
     {
         $rule = Rule::findOrFail($id);
+        $old_rule = $rule;
 
         $this->validate($request, [
-            'source_id'=>'required',
-            'source_category_id'=>'required',
             'target_id'=>'required',
             'target_category_id'=>'required',
         ]);
 
         $input = $request->only('source_id', 'source_category_id', 'target_id', 'target_category_id', 'post_status', 'status', 'slug_prefix', 'slug_suffix');
         $rule->fill($input)->save();
+
+        // Update to all pending post
+        if ($request['update_post']) {
+            $posts = Post::where('rule_id', $rule->id)->get();
+
+            foreach ($posts as $post) {
+                if (! $rule->status) {
+                    $post->delete();
+                    continue;
+                }
+
+                $post->target_id = $rule->target_id;
+                $post->target_category_id = $rule->target_category_id;
+                $post->post_status = $rule->post_status;
+                if (stristr($rule->slug_prefix, 'random')) {
+                    $xnum = explode('-', $rule->slug_prefix);
+                    $post->slug_prefix = $this->generateRandomString($xnum[1]);
+                } else {
+                    $post->slug_prefix = $rule->slug_prefix;
+                }
+
+                if (stristr($rule->slug_suffix, 'random')) {
+                    $xnum = explode('-', $rule->slug_suffix);
+                    $post->slug_suffix = $this->generateRandomString($xnum[1]);
+                } else {
+                    $post->slug_suffix = $rule->slug_suffix;
+                }
+
+                $post->save();
+            }
+        }
 
         return redirect()->route('rules.index')
             ->with('flash_message',

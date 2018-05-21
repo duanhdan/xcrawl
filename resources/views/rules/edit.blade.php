@@ -10,13 +10,13 @@
 				<div class="card-body">
 				{{ Form::model($rule, array('route' => array('rules.update', $rule->id), 'method' => 'PUT')) }}
 					<div class="form-group">
-						{{ Form::label('source_id', 'Source') }}
-						{{ Form::select('source_id', $sources, $rule->source_id, array('class' => 'form-control')) }}
+						{{ Form::label('source', 'Source (Can\'t modify)') }}
+						{{ Form::text('source', $rule->source->name, array('class' => 'form-control', 'readOnly' => 'readOnly')) }}
 					</div>
 
 					<div class="form-group">
-						{{ Form::label('source_category_id', 'From Category') }}
-						{{ Form::select('source_category_id', $rule->source->categories->pluck('name', 'id'), null, array('class' => 'form-control')) }}
+						{{ Form::label('source_category', 'From Category (Can\'t modify)') }}
+						{{ Form::text('source_category', $rule->source_category->name, array('class' => 'form-control', 'readOnly' => 'readOnly')) }}
 					</div>
 
 					<div class="form-group">
@@ -53,6 +53,11 @@
 					<div class="form-group">
 						{{ Form::label('status', 'Status') }}
 						{{ Form::select('status', ['0' => 'InActive', '1' => 'Active'], null, array('class' => 'form-control')) }}
+					</div>
+
+					<div class="form-group form-check">
+						{{ Form::checkbox('update_post', null, false, array('class' => 'form-check-input', 'id' => 'update_post')) }}
+						{{ Form::label('update_post', 'Update all pending posts?', array('class' => 'form-check-label')) }}
 					</div>
 
 					{{ Form::submit('Update', array('class' => 'btn btn-primary btn-sm')) }}
