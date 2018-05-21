@@ -105,7 +105,7 @@ class WorkspaceController extends Controller
 
             $check = UserState::where('user_id', $request['user_id'])->first();
 
-            if ($check->exists()) {
+            if ($check != null) {
                 // $check->update([
                 //     'workspace_id' => $id,
                 //     'role_id' => $request['role_id']
