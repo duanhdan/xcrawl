@@ -5,7 +5,14 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 			<div class="card">
-				<div class="card-header">List links</div>
+				<div class="card-header">
+					<span>List links with: </span>
+					<a href="{{ route('links.index') }}" class="btn @if ($status == 'all') btn-primary @else btn-link @endif">All</a>
+					<a href="{{ route('links.index', ['is' => 'pending']) }}" class="btn @if ($status == 'pending') btn-warning @else btn-link @endif">Pending</a>
+					<a href="{{ route('links.index', ['is' => 'wrote']) }}" class="btn @if ($status == 'wrote') btn-secondary @else btn-link @endif">Wrote</a>
+					<a href="{{ route('links.index', ['is' => 'processed']) }}" class="btn @if ($status == 'processed') btn-success @else btn-link @endif">Processed</a>
+					<a href="{{ route('links.index', ['is' => 'failed']) }}" class="btn @if ($status == 'failed') btn-danger @else btn-link @endif">Failed</a>
+				</div>
 
 				<div class="card-body">
 					<table class="table">
@@ -29,9 +36,11 @@
 								<td>{{ $link->title }}</td>
 								<td>{{ $link->category->name }}</td>
 								<td>{{ $link->source->name }}</td>
-								<td>{{ $link->status ? 'Processed' : 'Pending' }}</td>
+								<td><span class="badge {{ $link->badge($link->workspace(Auth::user()->state->workspace_id)->pivot->status) }}">{{ $link->status($link->workspace(Auth::user()->state->workspace_id)->pivot->status) }}</span></td>
 								<td>
-									<!-- <a href="{{ route('links.post', $link->id) }}" class="btn btn-info btn-sm" role="button">Select</a> -->
+									@if ($link->workspace(Auth::user()->state->workspace_id)->pivot->status == 0)
+									<a href="{{ route('posts.create', $link->id) }}" class="btn btn-info btn-sm" role="button">Write</a>
+									@endif
 								</td>
 							</tr>
 						@endforeach

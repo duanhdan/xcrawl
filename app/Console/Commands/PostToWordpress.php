@@ -76,7 +76,7 @@ class PostToWordpress extends Command
      */
     public function handle()
     {
-        $post = Post::with('link')->with('target')->with('category')->where('status', 0)->first();
+        $post = Post::with('link')->with('target')->with('category')->where('status', 1)->first();
 
         if (! $post) {
             return false;
@@ -132,7 +132,7 @@ class PostToWordpress extends Command
 
         // Update post pushing status
         if ($data_post) {
-            $post->update(['status' => 1]);
+            $post->update(['status' => 9]);
         } else {
             $post->update(['status' => -1]);
         }
@@ -171,8 +171,6 @@ class PostToWordpress extends Command
                 'post_content' => $dom_content->innertext,
             ]
         );
-
-        // dd($data_status);
 
         return $data_status;
     }

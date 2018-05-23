@@ -29,6 +29,9 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('rules/getTargetCategories/{id}', 'RuleController@getTargetCategories');
 
 	Route::resource('posts', 'PostController');
+	Route::get('posts/{post}/approve', 'PostController@approve')->name('posts.approve');
+	Route::get('posts/{link}/create', 'PostController@create')->name('posts.create');
+
 	Route::resource('links', 'LinkController');
 	Route::get('links/post', 'LinkController@post')->name('links.post');
 

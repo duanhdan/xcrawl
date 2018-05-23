@@ -16,13 +16,50 @@ class Link extends Model
 		return $this->belongsTo('App\SourceCategory', 'source_category_id');
 	}
 
-    public function workspace()
+    public function workspace($id = null)
     {
-        return $this->belongsToMany('App\Workspace', 'workspace_link')->withTimestamps();
+        if ($id)
+            return $this->belongsToMany('App\Workspace', 'workspace_link')->wherePivot('workspace_id', $id)->withPivot('status')->first();
+        else
+            return $this->belongsToMany('App\Workspace', 'workspace_link');
     }
 
     public function pending()
     {
     	return $this->belongsToMany('App\Workspace', 'workspace_link')->wherePivot('status', 0);
+    }
+
+    public function status($status_code)
+    {
+        $status = 'Pending';
+
+        if ($status_code == 1) {
+            $status = 'Processed';
+        }
+        else if ($status_code == 2) {
+            $status = 'Wrote';
+        }
+        else if ($status_code == -1) {
+            $status = 'Failed';
+        }
+
+        return $status;
+    }
+
+    public function badge($status_code)
+    {
+        $status = 'badge-warning';
+
+        if ($status_code == 1) {
+            $status = 'badge-success';
+        }
+        else if ($status_code == 2) {
+            $status = 'badge-info';
+        }
+        else if ($status_code == -1) {
+            $status = 'badge-danger';
+        }
+
+        return $status;
     }
 }

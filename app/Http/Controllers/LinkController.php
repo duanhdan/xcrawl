@@ -13,14 +13,28 @@ class LinkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $links = Link::with('source')->whereHas('workspace', function($q){
+        $status = $request->input('is', 'all');
+        $query = Link::with('source')->whereHas('workspace', function($q){
                     $q->where('id', Auth::user()->state->workspace_id);
-                })
-                ->orderby('id', 'desc')->paginate(20);
+                });
 
-        return view('links.index')->with('links', $links);
+        if ($status == 'all') {
+            //
+        } else if ($status == 'pending') {
+            $query = $query->where('status', 0);
+        } else if ($status == 'wrote') {
+            $query = $query->where('status', 2);
+        } else if ($status == 'processed') {
+            $query = $query->where('status', 9);
+        } else if ($status == 'failed') {
+            $query = $query->where('status', -1);
+        }
+
+        $links = $query->orderby('id', 'desc')->paginate(20);
+
+        return view('links.index', compact('links', 'status'));
     }
 
     /**

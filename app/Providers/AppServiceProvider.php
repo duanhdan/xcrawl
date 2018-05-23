@@ -50,14 +50,10 @@ class AppServiceProvider extends ServiceProvider
                 'name' => 'Links',
                 'icon' => 'icon-xxx',
             ],
-            'posts' => [
+            'posts.index' => [
                 'role' => ['Manager', 'Writer'],
                 'name' => 'Posts',
                 'icon' => 'icon-xxx',
-                'child' => [
-                    'posts.index' => 'List Posts',
-                    'posts.create' => 'Add Post'
-                ]
             ],
             'rules' => [
                 'role' => ['Manager', 'Writer'],
