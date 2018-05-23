@@ -19,7 +19,7 @@
 					<table class="table table-bordered">
 						<thead>
 							<tr>
-								<th colspan="9">{!! $posts->links('components.pagination') !!}</th>
+								<th colspan="9">{!! $posts->appends(['is' => $status])->links('components.pagination') !!}</th>
 							</tr>
 							<tr>
 								<th scope="col">#</th>
@@ -59,7 +59,7 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td><th colspan="9">{!! $posts->links('components.pagination') !!}</th></td>
+								<td><th colspan="9">{!! $posts->appends(['is' => $status])->links('components.pagination') !!}</th></td>
 							</tr>
 						</tfoot>
 					</table>
