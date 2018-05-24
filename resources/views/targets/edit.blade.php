@@ -21,12 +21,12 @@
 
 					<div class="form-group">
 						{{ Form::label('username', 'Username') }}
-						{{ Form::text('username', null, array('class' => 'form-control')) }}
+						{{ Form::text('username', $target->user->username, array('class' => 'form-control')) }}
 					</div>
 
 					<div class="form-group">
 						{{ Form::label('password', 'Password') }}
-						{{ Form::text('password', null, array('class' => 'form-control')) }}
+						{{ Form::text('password', $target->user->password, array('class' => 'form-control')) }}
 					</div>
 
 					{{ Form::submit('Update', array('class' => 'btn btn-primary btn-sm')) }}
