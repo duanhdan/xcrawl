@@ -16,20 +16,27 @@ class LinkController extends Controller
     public function index(Request $request)
     {
         $status = $request->input('is', 'all');
-        $query = Link::with('source')->whereHas('workspace', function($q){
-                    $q->where('id', Auth::user()->state->workspace_id);
-                });
 
         if ($status == 'all') {
-            //
+            $query = Link::with('source')->whereHas('workspace', function($q){
+                    $q->where('id', Auth::user()->state->workspace_id);
+                });
         } else if ($status == 'pending') {
-            $query = $query->where('status', 0);
+            $query = Link::with('source')->whereHas('pending', function($q){
+                    $q->where('id', Auth::user()->state->workspace_id);
+                });
         } else if ($status == 'wrote') {
-            $query = $query->where('status', 2);
+            $query = Link::with('source')->whereHas('wrote', function($q){
+                    $q->where('id', Auth::user()->state->workspace_id);
+                });
         } else if ($status == 'processed') {
-            $query = $query->where('status', 9);
+            $query = Link::with('source')->whereHas('processed', function($q){
+                    $q->where('id', Auth::user()->state->workspace_id);
+                });
         } else if ($status == 'failed') {
-            $query = $query->where('status', -1);
+            $query = Link::with('source')->whereHas('failed', function($q){
+                    $q->where('id', Auth::user()->state->workspace_id);
+                });
         }
 
         $links = $query->orderby('id', 'desc')->paginate(20);

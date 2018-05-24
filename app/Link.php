@@ -26,7 +26,22 @@ class Link extends Model
 
     public function pending()
     {
-    	return $this->belongsToMany('App\Workspace', 'workspace_link')->wherePivot('status', 0);
+        return $this->belongsToMany('App\Workspace', 'workspace_link')->wherePivot('status', 0);
+    }
+
+    public function wrote()
+    {
+        return $this->belongsToMany('App\Workspace', 'workspace_link')->wherePivot('status', 2);
+    }
+
+    public function processed()
+    {
+        return $this->belongsToMany('App\Workspace', 'workspace_link')->wherePivot('status', 1);
+    }
+
+    public function failed()
+    {
+        return $this->belongsToMany('App\Workspace', 'workspace_link')->wherePivot('status', -1);
     }
 
     public function status($status_code)
